@@ -1,0 +1,1 @@
+"""SignTrans backend application."""

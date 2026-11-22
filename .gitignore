@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# Local environment
+.env
+.env.local
+.env.*
+!.env.example
+
+# Large datasets and caches (model weights stay committed)
+ml/datasets/
+*.h5
+*.log
+
+# Runtime artifacts
+ml/models/training_status.json
+ml/models/prepare_status.json
+ml/models/hf_listing_cache.json
+
+# OS / editor
+.DS_Store
+Thumbs.db

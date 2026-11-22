@@ -1,0 +1,13 @@
+__pycache__
+*.py[cod]
+.pytest_cache
+.venv
+venv
+.env
+.env.*
+ml/datasets
+*.h5
+*.log
+ml/models/training_status.json
+ml/models/prepare_status.json
+ml/models/hf_listing_cache.json
