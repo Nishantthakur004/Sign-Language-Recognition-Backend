@@ -15,9 +15,9 @@ logger = logging.getLogger(__name__)
 def create_client(settings: Settings) -> AsyncIOMotorClient:
     return AsyncIOMotorClient(
         settings.mongodb_uri,
-        serverSelectionTimeoutMS=1500,
-        connectTimeoutMS=1500,
-        socketTimeoutMS=10000,
+        serverSelectionTimeoutMS=8000,
+        connectTimeoutMS=8000,
+        socketTimeoutMS=20000,
         maxPoolSize=50,
         uuidRepresentation="standard",
     )
