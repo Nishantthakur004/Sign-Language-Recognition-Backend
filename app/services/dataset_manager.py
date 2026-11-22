@@ -48,19 +48,25 @@ class DatasetManager:
         cached = 0
         if self.settings.isl40_cache.is_dir():
             cached = sum(1 for _ in self.settings.isl40_cache.rglob("*.h5"))
+        raw_classes = manifest.get("classes", [])
+        class_count = _count(raw_classes) or _count(manifest.get("samples"))
+        # Deployments may ship the manifest without the large MP4 corpus, so fall
+        # back to manifest totals when the clip files are not present on disk.
+        manifest_clips = _count(manifest.get("total_sequences")) or _count(manifest.get("records"))
+        manifest_cached = _count(manifest.get("records"))
         payload: dict[str, Any] = {
             "name": "ISL40 (vidit031/isl-isolated-40words)",
             "source": manifest.get("source"),
             "root": str(root),
             "root_exists": root.is_dir(),
-            "clips": clip_count,
-            "cached_landmarks": cached,
+            "clips": clip_count or manifest_clips,
+            "cached_landmarks": cached or manifest_cached,
             "manifest": str(manifest_path),
             "manifest_exists": manifest_path.is_file(),
             "signers": manifest.get("users", []),
-            "classes": manifest.get("classes", []),
-            "class_count": len(manifest.get("classes", [])),
-            "total_sequences": manifest.get("total_sequences"),
+            "classes": raw_classes if isinstance(raw_classes, list) else [],
+            "class_count": class_count,
+            "total_sequences": manifest.get("total_sequences") or manifest_clips,
             "split_counts": manifest.get("split_counts", {}),
             "class_distribution": manifest.get("class_distribution", {}),
         }
@@ -254,3 +260,13 @@ def _now() -> str:
     from ml.models.artifacts import utc_now
 
     return utc_now()
+
+
+def _count(value: Any) -> int:
+    """Coerce manifest counts, which may be ints or lists of records."""
+    if isinstance(value, (list, tuple, dict)):
+        return len(value)
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return 0

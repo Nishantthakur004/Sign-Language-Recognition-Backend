@@ -145,7 +145,9 @@ async def _status_snapshot(app: FastAPI, *, include_dataset: bool = False) -> di
         except Exception:
             logger.exception("Unable to read dataset status")
             dataset = {}
-        dataset_available = bool(dataset.get("root_exists") and dataset.get("clips"))
+        dataset_available = bool(
+            dataset.get("manifest_exists") or (dataset.get("root_exists") and dataset.get("clips"))
+        )
         payload["dataset"] = {
             "available": dataset_available,
             "root": dataset.get("root"),

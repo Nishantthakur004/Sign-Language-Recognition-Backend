@@ -8,6 +8,11 @@ from pathlib import Path
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 ML_DIR = BACKEND_DIR / "ml"
 
+# Hosted frontends (Vercel / GitHub Pages) are allowed by default so the
+# deployed UI can reach the API without extra configuration. Override with
+# CORS_ORIGIN_REGEX to restrict this to a specific origin.
+DEFAULT_CORS_ORIGIN_REGEX = r"https://([a-z0-9-]+\.)*(vercel\.app|github\.io)"
+
 try:
     from dotenv import load_dotenv
 except ImportError:
@@ -74,7 +79,7 @@ def get_settings() -> Settings:
         "http://localhost:3000,http://localhost:5173" if environment != "production" else ""
     )
     origins = _csv_env("CORS_ORIGINS", default_origins)
-    origin_regex = os.getenv("CORS_ORIGIN_REGEX", "").strip()
+    origin_regex = os.getenv("CORS_ORIGIN_REGEX", "").strip() or DEFAULT_CORS_ORIGIN_REGEX
     dataset_root = _env_path("DATASET_ROOT", ML_DIR / "datasets" / "processed").resolve()
     models_dir = _env_path("MODELS_DIR", ML_DIR / "models").resolve()
     settings = Settings(

@@ -1,0 +1,10 @@
+{
+  "name": "signtrans-backend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SignTrans FastAPI backend",
+  "scripts": {
+    "dev": "python run.py --reload",
+    "start": "python run.py"
+  }
+}

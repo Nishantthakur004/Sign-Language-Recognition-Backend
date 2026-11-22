@@ -39,6 +39,7 @@ def _print_url(url: str) -> None:
 
 
 def main() -> None:
+    reload = "--reload" in sys.argv
     configured_port = os.getenv("PORT")
     if configured_port:
         port = int(configured_port)
@@ -66,7 +67,7 @@ def main() -> None:
 
     os.environ.setdefault("PORT", str(port))
     _print_url(url)
-    uvicorn.run("app.main:app", host=host, port=port, log_level="info")
+    uvicorn.run("app.main:app", host=host, port=port, log_level="info", reload=reload)
 
 
 if __name__ == "__main__":
