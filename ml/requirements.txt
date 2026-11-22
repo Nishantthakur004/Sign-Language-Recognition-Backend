@@ -1,7 +1,9 @@
 # Machine-learning dependencies for dataset preparation, training, evaluation, and inference.
 # Install from the repository root:  pip install -r backend/ml/requirements.txt
 tensorflow>=2.15,<2.20
-mediapipe>=0.10.9,<0.11
+# MediaPipe 0.10.30+ removed the legacy mp.solutions API that the landmark
+# extraction code relies on, so stay below it.
+mediapipe>=0.10.9,<0.10.30
 opencv-python>=4.8,<5
 numpy>=1.24,<2.0
 Pillow>=10.0,<12

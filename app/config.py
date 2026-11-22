@@ -8,10 +8,13 @@ from pathlib import Path
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 ML_DIR = BACKEND_DIR / "ml"
 
-# Hosted frontends (Vercel / GitHub Pages) are allowed by default so the
-# deployed UI can reach the API without extra configuration. Override with
+# Hosted frontends (Vercel / GitHub Pages) and any local dev port are allowed by
+# default so the UI can reach the API without extra configuration. Override with
 # CORS_ORIGIN_REGEX to restrict this to a specific origin.
-DEFAULT_CORS_ORIGIN_REGEX = r"https://([a-z0-9-]+\.)*(vercel\.app|github\.io)"
+DEFAULT_CORS_ORIGIN_REGEX = (
+    r"https://([a-z0-9-]+\.)*(vercel\.app|github\.io)"
+    r"|http://(localhost|127\.0\.0\.1)(:\d+)?"
+)
 
 try:
     from dotenv import load_dotenv
